@@ -4,7 +4,7 @@ function Ui() {
   let date = new Date();
   let { firstTodo, firstDate, secTodo } = {
     firstTodo: "Work Out",
-    firstDate: date.getDate(),
+    firstDate: date.toLocaleDateString(),
     secTodo: "Sleep"
   };
   return (
