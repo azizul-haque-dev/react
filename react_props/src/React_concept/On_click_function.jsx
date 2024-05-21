@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "./styles.css";
 
 const Foods = ({ items }) => {
   return (
