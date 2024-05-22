@@ -19,7 +19,11 @@ export function NewApp() {
   useEffect(() => {
     generatePassword();
   }, [length, number, char, generatePassword]);
-
+  const passref = useRef(null);
+  const copy = useCallback(() => {
+    passref.current?.select();
+    window.navigator.clipboard.writeText();
+  }, [password]);
   return (
     <>
       <div className="container bg-gray-500 mx-auto w-3/4 p-5">
@@ -29,8 +33,12 @@ export function NewApp() {
           className="p-2  w-3/4 rounded "
           readOnly
           placeholder="pass"
+          ref={passref}
         />
-        <button className="bg-blue-600 rounded p-2"> Copy</button>
+        <button className="bg-blue-600 rounded p-2" onClick={copy}>
+          {" "}
+          Copy
+        </button>
 
         <div class="flex justify-center  p-5 w-full items-center space-x-2">
           <input
