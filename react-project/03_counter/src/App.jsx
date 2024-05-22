@@ -5,10 +5,10 @@ import "./App.css";
 function App() {
   const [counter, setCount] = useState(15);
   const addValue = () => {
-    setCount(counter + 1);
+    setCount(counter !== 20 ? counter + 1 : 20);
   };
   const removeValue = () => {
-    setCount(counter - 1);
+    setCount(counter !== 0 ? counter - 1 : 0);
   };
 
   return (
