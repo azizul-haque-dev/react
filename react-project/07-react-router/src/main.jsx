@@ -5,7 +5,8 @@ import "./index.css";
 import Home from "./Home/Home";
 import About from "./About/About";
 import Contact from "./Contact/Contact";
-import Github, { GithubLoder } from "./Github/Github";
+import Github from "./Github/Github";
+import { GithubLoader } from "./Loader/Loader";
 import {
   Route,
   RouterProvider,
@@ -45,7 +46,7 @@ const router = createBrowserRouter(
       <Route path="contact" element={<Contact />}>
         {" "}
       </Route>{" "}
-      <Route loder={GithubLoder} path="gitHub" element={<Github />}>
+      <Route loader={GithubLoader} path="gitHub" element={<Github />}>
         {" "}
       </Route>
     </Route>
