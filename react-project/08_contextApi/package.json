@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-  "name": "09-themechanger",
-=======
-  "name": "06-curencyapp",
->>>>>>> 1fa1016767aff432f1889683e6e4a099804e4ee3
+  "name": "08_contextApi",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -20,30 +16,14 @@
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
-<<<<<<< HEAD
-<<<<<<< HEAD:react-project/08_contextApi/package.json
     "@vitejs/plugin-react": "^4.3.0",
-=======
-    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
->>>>>>> 1fa1016767aff432f1889683e6e4a099804e4ee3:react-project/09-themeChanger/package.json
-=======
-    "@vitejs/plugin-react": "^4.3.0",
->>>>>>> 1fa1016767aff432f1889683e6e4a099804e4ee3
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-<<<<<<< HEAD
-<<<<<<< HEAD:react-project/08_contextApi/package.json
-    "vite": "^5.2.12"
-=======
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
-    "vite": "^5.2.0"
->>>>>>> 1fa1016767aff432f1889683e6e4a099804e4ee3:react-project/09-themeChanger/package.json
-=======
     "vite": "^5.2.12"
->>>>>>> 1fa1016767aff432f1889683e6e4a099804e4ee3
   }
 }
