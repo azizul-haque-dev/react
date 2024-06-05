@@ -5,7 +5,7 @@ export const Todocontext = createContext({
         {
             id:1,
             todo :'Good morning',
-            complete:false
+            completed:false
         }
     ],
     addTodo:(todo)=>{},
