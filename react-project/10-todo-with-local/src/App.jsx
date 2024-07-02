@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { TodoProvider } from "./Context/TodoContext";
 import "./App.css";
+import TodoItem from "./Component/TodoItem";
+import TodoForm from "./Component/TodoForm";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -9,9 +11,9 @@ function App() {
     setTodos((prev) => [{ id: Date.now(), ...todo }, ...prev]);
   };
 
-  const updateTodo = (updatedTodo, id) => {
+  const updateTodo = (id, todo) => {
     setTodos((prev) =>
-      prev.map((prevTodo) => (prevTodo.id === id ? updatedTodo : prevTodo))
+      prev.map((prevTodo) => (prevTodo.id === id ? todo : prevTodo))
     );
   };
 
@@ -22,17 +24,21 @@ function App() {
   const completeTodo = (id) => {
     setTodos((prev) =>
       prev.map((todo) =>
-        todo.id === id ? { ...todo, complete: !todo.complete } : todo
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
   useEffect(() => {
     const storedTodos = JSON.parse(localStorage.getItem("todos"));
-    if (storedTodos && storedTodos.length > 0) setTodos(storedTodos);
+    console.log("Loaded todos from local storage:", storedTodos);
+    if (storedTodos && storedTodos.length > 0) {
+      setTodos(storedTodos);
+    }
   }, []);
 
   useEffect(() => {
+    console.log("Saving todos to local storage:", todos);
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
@@ -45,9 +51,15 @@ function App() {
           <h1 className="text-2xl font-bold text-center mb-8 mt-2">
             Manage Your Todos
           </h1>
-          <div className="mb-4">{/* Todo form goes here */}</div>
+          <div className="mb-4">
+            <TodoForm />
+          </div>
           <div className="flex flex-wrap gap-y-3">
-            {/* Loop and Add TodoItem here */}
+            {todos.map((todo) => (
+              <div key={todo.id}>
+                <TodoItem todo={todo} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
