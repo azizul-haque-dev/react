@@ -1,0 +1,79 @@
+/* styles.css */
+
+/* Center the main container horizontally and vertically using Grid */
+.main {
+  display: grid;
+  place-items: center; /* Center items both horizontally and vertically */
+  height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove default margin */
+  background-color: #e9ecef; /* Optional: background color for better visibility */
+}
+
+.weather-container {
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  border: 2px solid red;
+}
+
+/* Ensure that search component styles are also included */
+.formContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.inputSearch {
+  padding: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Weather data styles */
+.weather-header {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.weather-description {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.weather-temp {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.weather-humidity {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.weather-date {
+  font-size: 14px;
+  color: #777;
+}
