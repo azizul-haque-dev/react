@@ -70,7 +70,7 @@ const Navbar = () => {
           visible ? " w-full" : " w-0"
         }`}
       >
-        <div className="flex flex-col text-gray-600">
+        <div className="flex sm:hidden flex-col text-gray-600">
           <div
             onClick={() => setVisible(false)}
             className="flex items-center gap-4 p-3 cursor-pointer hover:text-black"
@@ -82,7 +82,13 @@ const Navbar = () => {
             />
             <p>Back</p>
           </div>
+
+          <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border" to="/">HOME</NavLink>
+          <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border" to="/collections">COLLECTIONS</NavLink>
+          <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border" to="/about">ABOUT</NavLink>
+          <NavLink onClick={()=>setVisible(false)} className="py-2 pl-6 border" to="/contact">CONTACT</NavLink>
         </div>
+        
       </div>
     </div>
   );
