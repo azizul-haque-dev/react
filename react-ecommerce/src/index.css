@@ -18,3 +18,9 @@ a.active hr {
   font-weight: 400;
   font-style: normal;
 }
+@media (max-width: 640px) {
+  .mbl-Nav-item.active {
+    color: #fff;
+    background-color: black;
+  }
+}
