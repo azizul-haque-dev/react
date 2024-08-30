@@ -4,10 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
-hr {
+.main-nav hr {
   display: none;
 }
-a.active hr {
+.main-nav a.active hr {
   display: block;
 }
 * {

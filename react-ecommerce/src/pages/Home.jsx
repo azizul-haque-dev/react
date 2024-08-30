@@ -2,6 +2,9 @@ import React from "react";
 import Hero from "../components/Hero";
 import LatestCollections from "../components/LatestCollections";
 import BestSellerProducts from "../components/BestSellerProducts";
+import OurPolicy from "../components/OurPolicy";
+import NewsLaterBox from "../components/NewsLaterBox";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -9,6 +12,9 @@ const Home = () => {
       <Hero />
       <LatestCollections />
       <BestSellerProducts />
+      <OurPolicy />
+      <NewsLaterBox />
+      <Footer />
     </div>
   );
 };
