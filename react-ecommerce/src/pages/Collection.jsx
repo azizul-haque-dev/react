@@ -5,12 +5,13 @@ import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
-  const { products } = useShop();
+  const { products, search, showSearch } = useShop();
   const [showFilter, setShowFilter] = useState(false);
   const [filterProduct, setFilterProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [subcategory, setSubCategory] = useState([]);
   const [sortOption, setSortOption] = useState("relevant");
+  console.log(products);
 
   const toggleCategory = (e) => {
     const value = e.target.value;
@@ -52,6 +53,12 @@ const Collection = () => {
           subcategory.includes(product.subCategory)
         );
       }
+      // filter by search
+      if (showSearch && search) {
+        filteredProducts = filteredProducts.filter((product) =>
+          product.name.toLowerCase().includes(search.toLowerCase())
+        );
+      }
 
       // Sort products based on the selected option
       if (sortOption === "low-high") {
@@ -59,12 +66,13 @@ const Collection = () => {
       } else if (sortOption === "high-low") {
         filteredProducts.sort((a, b) => b.price - a.price);
       }
+      // filter by search
 
       setFilterProduct(filteredProducts);
     };
 
     filterAndSortProducts();
-  }, [category, subcategory, products, sortOption]);
+  }, [category, subcategory, products, sortOption, search, showSearch]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
