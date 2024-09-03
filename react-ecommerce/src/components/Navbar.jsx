@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { assets } from "../assets/frontend_assets/assets";
 import { Link, NavLink } from "react-router-dom";
-import { useShop } from "../context/GlovalContext";
+import { useShop } from "../context/GlobalContext";
 
 const Navbar = () => {
   const { setShowSearch, showSearch } = useShop();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useShop } from "../context/GlovalContext";
+import { useShop } from "../context/GlobalContext";
 
 function ProductItem({ product }) {
   const { currency } = useShop();

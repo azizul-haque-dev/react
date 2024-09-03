@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useShop } from "../context/GlovalContext";
+import { useShop } from "../context/GlobalContext";
 import { assets } from "../assets/frontend_assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
@@ -11,7 +11,6 @@ const Collection = () => {
   const [category, setCategory] = useState([]);
   const [subcategory, setSubCategory] = useState([]);
   const [sortOption, setSortOption] = useState("relevant");
-  console.log(products);
 
   const toggleCategory = (e) => {
     const value = e.target.value;
