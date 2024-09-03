@@ -4,8 +4,12 @@ import { useShop } from "../context/GlobalContext";
 
 function ProductItem({ product }) {
   const { currency } = useShop();
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <Link
+      onClick={handleClick}
       to={`/product/${product._id}`}
       className="text-gray-700 cursor-pointer"
     >

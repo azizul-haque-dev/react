@@ -1,7 +1,12 @@
 import React from "react";
+import { useShop } from "../context/GlobalContext";
 
 const Cart = () => {
-  return <div>cart</div>;
+  const { cart } = useShop();
+
+  console.log(cart);
+
+  return <div>Cart</div>;
 };
 
 export default Cart;

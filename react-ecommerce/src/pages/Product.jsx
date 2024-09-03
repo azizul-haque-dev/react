@@ -2,35 +2,42 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useShop } from "../context/GlobalContext";
 import { assets } from "../assets/frontend_assets/assets";
-
+import RelatedProduct from "../components/RelatedProduct";
+import Loading from "../components/Loading";
 function Product() {
-  const { products, currency } = useShop();
+  const { products, currency, addToCart } = useShop();
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const [productData, setProductData] = useState(null);
   const [productImg, setProductImg] = useState("");
   const [size, setSize] = useState("");
 
   useEffect(() => {
+    setLoading(true);
     const product = products.find((item) => item._id === id);
-    console.log(product);
 
     if (product) {
       setProductData(product);
       if (product.image && product.image.length > 0) {
         setProductImg(product.image[0]);
       }
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   }, [id, products]);
 
+  if (loading) return <Loading />;
+
   if (!productData) {
-    return (
-      <div className="text-center p-10">Product not found or loading...</div>
-    );
+    return <div className="text-center p-10">Product not found</div>;
   }
 
   return (
     <div className="border-t pt-10 transition-opacity ease-in duration-500 opacity-100">
+      {/* Product details */}
       <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+        {/* Image gallery and main image */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
           <div className="flex flex-col overflow-x-auto sm:overflow-y-scroll sm:justify-normal sm:w-[18.7%] mb-3 w-full">
             {productData.image && productData.image.length > 0 ? (
@@ -59,14 +66,13 @@ function Product() {
             )}
           </div>
         </div>
-        {/* product info */}
-        <div className="flex-1 ">
+        {/* Product info */}
+        <div className="flex-1">
           <h1 className="font-medium text-2xl mt-2">{productData.name}</h1>
           <div className="flex items-center gap-1 mt-2">
-            <img src={assets.star_icon} alt="" className="w-3" />
-            <img src={assets.star_icon} alt="" className="w-3" />
-            <img src={assets.star_icon} alt="" className="w-3" />
-            <img src={assets.star_icon} alt="" className="w-3" />
+            {[...Array(4)].map((_, i) => (
+              <img src={assets.star_icon} alt="" key={i} className="w-3" />
+            ))}
             <img src={assets.star_dull_icon} alt="" className="w-3" />
             <p className="pl-2">(122)</p>
           </div>
@@ -93,21 +99,27 @@ function Product() {
               ))}
             </div>
           </div>
-          <button className="bg-black text-white px-8 py-3 text-sm">
+          <button
+            onClick={() => {
+              console.log("Add to Cart clicked"); // Debugging line
+              addToCart(productData);
+            }}
+            className="bg-black text-white px-8 py-3 text-sm"
+          >
             Add to cart
           </button>
           <hr className="mt-8 sm:w-4/5" />
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
             <p>100% Original product.</p>
-            <p>Cash on delivry is available on this product.</p>
+            <p>Cash on delivery is available on this product.</p>
             <p>Easy return and exchange policy within 7 days.</p>
           </div>
         </div>
       </div>
-      {/* Discription and review section */}
+      {/* Description and review section */}
       <div className="mt-20">
         <div className="flex">
-          <b className="border px-5 py-3 text-sm">Discription</b>
+          <b className="border px-5 py-3 text-sm">Description</b>
           <p className="border px-5 py-3 text-sm">Reviews (122)</p>
         </div>
         <div className="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500">
@@ -128,7 +140,12 @@ function Product() {
           </p>
         </div>
       </div>
-      {/* Discription and review section end*/}
+      {/* Display Related Product */}
+      <RelatedProduct
+        product={productData}
+        category={productData.category}
+        subCategory={productData.subCategory}
+      />
     </div>
   );
 }
