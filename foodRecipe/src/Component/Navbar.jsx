@@ -7,6 +7,7 @@ function Navbar() {
     e.preventDefault();
     fetchData();
   }
+  
 
   return (
     <nav className="flex justify-between items-center py-8 container mx-auto flex-col lg:flex-row gap-5 lg:gap-0">

@@ -4,6 +4,8 @@ import { useShop } from "../context/GlobalContext";
 import { assets } from "../assets/frontend_assets/assets";
 import RelatedProduct from "../components/RelatedProduct";
 import Loading from "../components/Loading";
+import { toast } from "react-toastify";
+
 function Product() {
   const { products, currency, addToCart } = useShop();
   const { id } = useParams();
@@ -32,6 +34,20 @@ function Product() {
   if (!productData) {
     return <div className="text-center p-10">Product not found</div>;
   }
+
+  const handleAddToCart = () => {
+    if (size) {
+      // Prepare the item with size information
+      const itemToAdd = {
+        ...productData,
+        size
+      };
+   
+      addToCart(itemToAdd);
+    } else {
+     toast.error('select product size')
+    }
+  };
 
   return (
     <div className="border-t pt-10 transition-opacity ease-in duration-500 opacity-100">
@@ -100,11 +116,10 @@ function Product() {
             </div>
           </div>
           <button
-            onClick={() => {
-              console.log("Add to Cart clicked"); // Debugging line
-              addToCart(productData);
-            }}
-            className="bg-black text-white px-8 py-3 text-sm"
+            onClick={handleAddToCart}
+            className={`bg-black text-white px-8 py-3 text-sm
+            }`}
+          //disabled={!size} 
           >
             Add to cart
           </button>

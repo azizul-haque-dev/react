@@ -8,14 +8,31 @@ const GlobalContextProvider = ({ children }) => {
   const delivery_fee = 10;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({}); // Cart state as an object
 
   function addToCart(item) {
-    const isItemInCart = cart.some((cartItem) => cartItem.id === item.id);
+    const { _id, size } = item;
+    const key = `${_id}-${size}`; // Create a unique key for the item
+console.log(key);
 
-    if (!isItemInCart) {
-      setCart([...cart, item]);
-    }
+    setCart(prevCart => {
+      const updatedCart = { ...prevCart };
+
+      if (updatedCart[key]) {
+        // If item already in cart, increment the quantity
+        updatedCart[key].quantity += 1;
+      } else {
+        // If item not in cart, add it with quantity 1
+        updatedCart[key] = { ...item, quantity: 1 };
+      }
+
+      return updatedCart;
+    });
+  }
+
+  function getCartItemCount() {
+    // Calculate the total count of items in the cart
+    return Object.values(cart).reduce((total, item) => total + item.quantity, 0);
   }
 
   const value = {
@@ -27,8 +44,9 @@ const GlobalContextProvider = ({ children }) => {
     showSearch,
     setShowSearch,
     addToCart,
-    cart,
-    setCart
+    cart, 
+    setCart,
+    getCartItemCount 
   };
 
   return (
