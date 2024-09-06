@@ -11,20 +11,22 @@ const Cart = () => {
     setCart(updatedCart);
   };
 
-  const handleQuantityChange = (key, amount) => {
+  const handleQuantityChange = (key, value) => {
     const updatedCart = { ...cart };
     if (updatedCart[key]) {
-      updatedCart[key].quantity += amount;
-      if (updatedCart[key].quantity <= 0) {
+      const newQuantity = value;
+      if (newQuantity <= 0) {
         delete updatedCart[key];
+      } else {
+        updatedCart[key].quantity = newQuantity;
       }
+
       setCart(updatedCart);
     }
   };
 
   const cartItems = Object.values(cart);
 
-  // Subtotal calculation
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
       return total + item.price * item.quantity;
@@ -66,20 +68,16 @@ const Cart = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <button
-                    className="border px-2"
-                    onClick={() => handleQuantityChange(key, -1)}
-                  >
-                    -
-                  </button>
-                  <p className="mx-2">{item.quantity}</p>
-                  <button
-                    className="border px-2"
-                    onClick={() => handleQuantityChange(key, 1)}
-                  >
-                    +
-                  </button>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    min="0"
+                    onChange={(e) =>
+                      handleQuantityChange(key, parseInt(e.target.value, 10))
+                    }
+                    className="w-16 border px-2 text-center"
+                  />
                 </div>
                 <div className="text-right">
                   <button
