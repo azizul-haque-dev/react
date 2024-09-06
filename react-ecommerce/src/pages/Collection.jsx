@@ -52,7 +52,8 @@ const Collection = () => {
           subcategory.includes(product.subCategory)
         );
       }
-      // filter by search
+
+      // Filter by search
       if (showSearch && search) {
         filteredProducts = filteredProducts.filter((product) =>
           product.name.toLowerCase().includes(search.toLowerCase())
@@ -65,7 +66,6 @@ const Collection = () => {
       } else if (sortOption === "high-low") {
         filteredProducts.sort((a, b) => b.price - a.price);
       }
-      // filter by search
 
       setFilterProduct(filteredProducts);
     };
@@ -85,7 +85,7 @@ const Collection = () => {
           <img
             className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
             src={assets.dropdown_icon}
-            alt=""
+            alt="Toggle Filters"
           />
         </p>
         {/* Category Filter */}
@@ -96,33 +96,17 @@ const Collection = () => {
         >
           <p className="mb-3 text-sm font-medium">CATEGORIES</p>
           <div className="flex flex-col gap-2 text-sm text-gray-700 font-light">
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Men"
-                onChange={toggleCategory}
-              />{" "}
-              Men
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Women"
-                onChange={toggleCategory}
-              />{" "}
-              Women
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Kids"
-                onChange={toggleCategory}
-              />{" "}
-              Kids
-            </p>
+            {["Men", "Women", "Kids"].map((categoryName) => (
+              <p key={categoryName} className="flex gap-2">
+                <input
+                  className="w-3"
+                  type="checkbox"
+                  value={categoryName}
+                  onChange={toggleCategory}
+                />{" "}
+                {categoryName}
+              </p>
+            ))}
           </div>
         </div>
         {/* Sub Category Filter */}
@@ -133,33 +117,17 @@ const Collection = () => {
         >
           <p className="mb-3 text-sm font-medium">SUB CATEGORIES</p>
           <div className="flex flex-col gap-2 text-sm text-gray-700 font-light">
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Topwear"
-                onChange={toggleSubCategory}
-              />{" "}
-              Topwear
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Bottomwear"
-                onChange={toggleSubCategory}
-              />{" "}
-              Bottomwear
-            </p>
-            <p className="flex gap-2">
-              <input
-                className="w-3"
-                type="checkbox"
-                value="Winterwear"
-                onChange={toggleSubCategory}
-              />{" "}
-              Winterwear
-            </p>
+            {["Topwear", "Bottomwear", "Winterwear"].map((subCategoryName) => (
+              <p key={subCategoryName} className="flex gap-2">
+                <input
+                  className="w-3"
+                  type="checkbox"
+                  value={subCategoryName}
+                  onChange={toggleSubCategory}
+                />{" "}
+                {subCategoryName}
+              </p>
+            ))}
           </div>
         </div>
       </div>
