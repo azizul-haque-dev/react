@@ -34,8 +34,19 @@ console.log(key);
     // Calculate the total count of items in the cart
     return Object.values(cart).reduce((total, item) => total + item.quantity, 0);
   }
+  const cartItems = Object.values(cart);
+
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  };
+
+  const subtotal = calculateSubtotal();
+  const shippingFee = 10.0;
 
   const value = {
+    subtotal,shippingFee,
     products,
     currency,
     delivery_fee,

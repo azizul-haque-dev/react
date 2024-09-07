@@ -1,9 +1,10 @@
 import React from "react";
 import { useShop } from "../context/GlobalContext";
 import Title from "../components/Title";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, setCart, currency } = useShop();
+  const { cart, setCart, currency, subtotal, shippingFee } = useShop();
 
   const handleRemoveItem = (key) => {
     const updatedCart = { ...cart };
@@ -14,28 +15,18 @@ const Cart = () => {
   const handleQuantityChange = (key, value) => {
     const updatedCart = { ...cart };
     if (updatedCart[key]) {
-      const newQuantity = value;
+      const newQuantity = parseInt(value, 10);
       if (newQuantity <= 0) {
         delete updatedCart[key];
       } else {
         updatedCart[key].quantity = newQuantity;
       }
-
       setCart(updatedCart);
     }
   };
 
-  const cartItems = Object.values(cart);
-
-  const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
-  };
-
-  const subtotal = calculateSubtotal();
-  const shippingFee = 10.0; // Static shipping fee
   const total = subtotal + shippingFee;
+  const cartItems = Object.values(cart);
 
   return (
     <div className="border-t pt-14">
@@ -50,7 +41,7 @@ const Cart = () => {
             const key = `${item._id}-${item.size}`;
             return (
               <div
-                className=" py-4 border-t text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-3"
+                className="py-4 border-t text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-3"
                 key={key}
               >
                 <div className="flex items-start gap-6">
@@ -74,7 +65,7 @@ const Cart = () => {
                     value={item.quantity}
                     min="0"
                     onChange={(e) =>
-                      handleQuantityChange(key, parseInt(e.target.value, 10))
+                      handleQuantityChange(key, e.target.value)
                     }
                     className="w-16 border px-2 text-center"
                   />
@@ -131,9 +122,12 @@ const Cart = () => {
               </div>
             </div>
             <div className="w-full text-end">
-              <button className="bg-black text-white text-sm my-8 px-8 py-3">
+              <Link
+                to="/place-order"
+                className="bg-black text-white text-sm my-8 px-8 py-3 inline-block"
+              >
                 PROCEED TO CHECKOUT
-              </button>
+              </Link>
             </div>
           </div>
         </div>
