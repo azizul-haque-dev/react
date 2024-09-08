@@ -4,8 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useShop } from "../context/GlobalContext";
 
 const Navbar = () => {
- 
-  const { setShowSearch, showSearch,getCartItemCount } = useShop();
+  const { setShowSearch, showSearch, getCartItemCount, isLogedIn } = useShop();
   let totalCount = getCartItemCount();
   const [visible, setVisible] = useState(false);
   return (
@@ -36,19 +35,29 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-6">
+        <Link to='/collections'>
         <img
           src={assets.search_icon}
           alt="search icon"
           className="w-5 cursor-pointer"
           onClick={() => setShowSearch(!showSearch)}
-        />
+        /></Link>
+       
         <div className="group relative">
-          <img
-            src={assets.profile_icon}
-            alt="profile icon"
-            className="w-5 cursor-pointer"
-          />
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
+          <Link to="/login">
+            {" "}
+            <img
+              src={assets.profile_icon}
+              alt="profile icon"
+              className="w-5 cursor-pointer"
+            />
+          </Link>
+
+          <div
+            className={` ${
+              isLogedIn ? "group-hover:block" : ""
+            } hidden absolute dropdown-menu right-0 pt-4`}
+          >
             <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
               <p className="cursor-pointer hover:text-black">My Profile</p>
               <p className="cursor-pointer hover:text-black"> Orders</p>
@@ -59,7 +68,7 @@ const Navbar = () => {
         <Link to="/cart" className="relative">
           <img src={assets.cart_icon} alt="" className="w-5 min-w-5" />
           <p className="absolute right right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
-           {totalCount}
+            {totalCount}
           </p>
         </Link>
         <img

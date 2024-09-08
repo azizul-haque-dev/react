@@ -9,6 +9,7 @@ const GlobalContextProvider = ({ children }) => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cart, setCart] = useState({}); // Cart state as an object
+  const [isLogedin ,setIsLogedIn]= useState(false)
 
   function addToCart(item) {
     const { _id, size } = item;
