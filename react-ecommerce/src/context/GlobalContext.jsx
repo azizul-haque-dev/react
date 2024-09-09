@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { products } from "../assets/frontend_assets/assets";
 
 const GlobalContext = createContext();
@@ -8,15 +8,19 @@ const GlobalContextProvider = ({ children }) => {
   const delivery_fee = 10;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [cart, setCart] = useState({}); // Cart state as an object
-  const [isLogedin ,setIsLogedIn]= useState(false)
+  const [cart, setCart] = useState(() => {
+    const savedItems = localStorage.getItem("cart");
+    return savedItems ? JSON.parse(savedItems) : {};
+  }); // Cart state as an object
+  const [isLogedin, setIsLogedIn] = useState(false);
+  useEffect(() => localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
 
   function addToCart(item) {
     const { _id, size } = item;
     const key = `${_id}-${size}`; // Create a unique key for the item
-console.log(key);
+    console.log(key);
 
-    setCart(prevCart => {
+    setCart((prevCart) => {
       const updatedCart = { ...prevCart };
 
       if (updatedCart[key]) {
@@ -33,7 +37,10 @@ console.log(key);
 
   function getCartItemCount() {
     // Calculate the total count of items in the cart
-    return Object.values(cart).reduce((total, item) => total + item.quantity, 0);
+    return Object.values(cart).reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
   }
   const cartItems = Object.values(cart);
 
@@ -47,7 +54,8 @@ console.log(key);
   const shippingFee = 10.0;
 
   const value = {
-    subtotal,shippingFee,
+    subtotal,
+    shippingFee,
     products,
     currency,
     delivery_fee,
@@ -56,9 +64,9 @@ console.log(key);
     showSearch,
     setShowSearch,
     addToCart,
-    cart, 
+    cart,
     setCart,
-    getCartItemCount 
+    getCartItemCount
   };
 
   return (
