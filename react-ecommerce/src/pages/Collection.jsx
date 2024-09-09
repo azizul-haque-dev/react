@@ -7,11 +7,13 @@ import ProductItem from "../components/ProductItem";
 const Collection = () => {
   const { products, search, showSearch } = useShop();
   const [showFilter, setShowFilter] = useState(false);
-  const [filterProduct, setFilterProduct] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subcategory, setSubCategory] = useState([]);
   const [sortOption, setSortOption] = useState("relevant");
+  const [sortedProducts, setSortedProducts] = useState([]);
 
+  // Handle category changes
   const toggleCategory = (e) => {
     const value = e.target.value;
     setCategory((prev) =>
@@ -21,6 +23,7 @@ const Collection = () => {
     );
   };
 
+  // Handle subcategory changes
   const toggleSubCategory = (e) => {
     const value = e.target.value;
     setSubCategory((prev) =>
@@ -30,48 +33,60 @@ const Collection = () => {
     );
   };
 
+  // Handle sort changes
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
   };
 
+  // Filter products based on category, subcategory, and search
   useEffect(() => {
-    // Function to filter and sort products based on selected filters and sorting
-    const filterAndSortProducts = () => {
-      let filteredProducts = products;
+    const filterProducts = () => {
+      let tempProducts = products;
 
       // Filter by category
       if (category.length > 0) {
-        filteredProducts = filteredProducts.filter((product) =>
+        tempProducts = tempProducts.filter((product) =>
           category.includes(product.category)
         );
       }
 
       // Filter by subcategory
       if (subcategory.length > 0) {
-        filteredProducts = filteredProducts.filter((product) =>
+        tempProducts = tempProducts.filter((product) =>
           subcategory.includes(product.subCategory)
         );
       }
 
       // Filter by search
       if (showSearch && search) {
-        filteredProducts = filteredProducts.filter((product) =>
+        tempProducts = tempProducts.filter((product) =>
           product.name.toLowerCase().includes(search.toLowerCase())
         );
       }
 
-      // Sort products based on the selected option
-      if (sortOption === "low-high") {
-        filteredProducts.sort((a, b) => a.price - b.price);
-      } else if (sortOption === "high-low") {
-        filteredProducts.sort((a, b) => b.price - a.price);
-      }
-
-      setFilterProduct(filteredProducts);
+      setFilteredProducts(tempProducts);
     };
 
-    filterAndSortProducts();
-  }, [category, subcategory, products, sortOption, search, showSearch]);
+    filterProducts();
+  }, [category, subcategory, products, search, showSearch]);
+
+  // Sort filtered products based on sortOption
+  useEffect(() => {
+    const sortProducts = () => {
+      let tempProducts = [...filteredProducts]; // Create a copy for sorting
+
+      // Sort products
+      if (sortOption === "low-high") {
+        tempProducts.sort((a, b) => a.price - b.price);
+      } else if (sortOption === "high-low") {
+        tempProducts.sort((a, b) => b.price - a.price);
+      }
+
+      setSortedProducts(tempProducts);
+    };
+
+    sortProducts();
+  }, [filteredProducts, sortOption]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
@@ -148,7 +163,7 @@ const Collection = () => {
         </div>
         {/* Map Products */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProduct?.map((product) => (
+          {sortedProducts.map((product) => (
             <ProductItem key={product._id} product={product} />
           ))}
         </div>
