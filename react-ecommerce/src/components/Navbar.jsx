@@ -35,14 +35,15 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-6">
-        <Link to='/collections'>
-        <img
-          src={assets.search_icon}
-          alt="search icon"
-          className="w-5 cursor-pointer"
-          onClick={() => setShowSearch(!showSearch)}
-        /></Link>
-       
+        <Link to="/collections">
+          <img
+            src={assets.search_icon}
+            alt="search icon"
+            className="w-5 cursor-pointer"
+            onClick={() => setShowSearch(!showSearch)}
+          />
+        </Link>
+
         <div className="group relative">
           <Link to="/login">
             {" "}
