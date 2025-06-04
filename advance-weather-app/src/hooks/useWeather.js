@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const useWeather = () => {
   const [weatherData, setWeatherData] = useState({
@@ -14,44 +14,67 @@ const useWeather = () => {
     longitude: "",
     latitude: ""
   });
+
   const [loading, setLoading] = useState({
     state: false,
     message: ""
   });
+
   const [error, setError] = useState(null);
+
+  const fetchWeatherData = async (latitude, longitude) => {
+    try {
+      setLoading({
+        state: true,
+        message: "Getting weather data..."
+      });
+
+      const apiKey = import.meta.env.VITE_WEATHER_API-KEY;
+      const res = await fetch(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,daily,alerts&appid=${apiKey}&units=metric`
+      );
+
+      if (!res.ok) {
+        const errorMessage = `Fetching weather data failed: ${res.status}`;
+        throw new Error(errorMessage);
+      }
+
+      const { current } = await res.json();
+
+      const updateWeatherData = {
+        ...weatherData,
+        climate: current?.weather?.[0]?.main,
+        temperature: current?.temp,
+        maxTemperature: current?.temp, 
+        minTemperature: current?.temp,
+        humidity: current?.humidity,
+        cloudPercentage: current?.clouds,
+        wind: current?.wind_speed,
+        time: new Date(current?.dt * 1000).toLocaleTimeString(),
+        longitude,
+        latitude
+      };
+
+      setWeatherData(updateWeatherData);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading({ state: false, message: "" });
+    }
+  };
+
+  useEffect(() => {
+    setLoading({
+      state: true,
+      message: "Fetching location..."
+    });
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      fetchWeatherData(position.coords.latitude, position.coords.longitude);
+    });
+  }, []);
+
+  return { weatherData, loading, error };
 };
 
-const fetchWeatherData = async (latitude, longitude) => {
-  try {
-    setLoading({ ...loading, state: true, message: "Getting weather data..." });
-    // make the fetch call
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${
-        import.meta.env.VITE_WEATHER_API_KEY
-      }&units=metric`
-    );
-    if (res.ok) {
-      const errorMassage = `Fethcing Weather data failed : ${res.status}`;
-      throw new Error(errorMassage);
-    }
-    const data = await res.json();
-    const updateWeatherData = {
-      ...weatherData,
-      location: data?.name,
-      climate: data?.weather[0]?.main,
-      temperature: data?.main?.temp,
-      maxTemperature: data?.main?.temp_max,
-      minTemperature: data?.main?.temp_min,
-      humidity: data?.main?.humidity,
-      cloudPercentage: data?.clouds?.all,
-      wind: data?.wind?.speed,
-      time: data.td,
-      longitude: longitude,
-      latitude: latitude
-    };
-  } catch (error) {
-    setError(error.message);
-  } finally {
-    setLoading({ ...loading, state: false, message: "" });
-  }
-};
+export default useWeather;
