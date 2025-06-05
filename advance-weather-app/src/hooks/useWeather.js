@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { LocationContext } from "../context/index";
 
 const useWeather = () => {
+  const { selectedLocation } = useContext(LocationContext);
+
   const [weatherData, setWeatherData] = useState({
     location: "",
     climate: "",
@@ -29,33 +32,30 @@ const useWeather = () => {
         message: "Getting weather data..."
       });
 
-      const apiKey = import.meta.env.VITE_WEATHER_API-KEY;
+      const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
       const res = await fetch(
-        `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,daily,alerts&appid=${apiKey}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
       );
 
       if (!res.ok) {
-        const errorMessage = `Fetching weather data failed: ${res.status}`;
-        throw new Error(errorMessage);
+        throw new Error(`Fetching weather data failed: ${res.status}`);
       }
 
-      const { current } = await res.json();
+      const data = await res.json();
 
-      const updateWeatherData = {
-        ...weatherData,
-        climate: current?.weather?.[0]?.main,
-        temperature: current?.temp,
-        maxTemperature: current?.temp, 
-        minTemperature: current?.temp,
-        humidity: current?.humidity,
-        cloudPercentage: current?.clouds,
-        wind: current?.wind_speed,
-        time: new Date(current?.dt * 1000).toLocaleTimeString(),
+      setWeatherData({
+        location: data?.name,
+        climate: data?.weather[0]?.main,
+        temperature: data?.main?.temp,
+        maxTemperature: data?.main?.temp_max,
+        minTemperature: data?.main?.temp_min,
+        humidity: data?.main?.humidity,
+        cloudPercentage: data?.clouds?.all,
+        wind: data?.wind?.speed,
+        time: data?.dt,
         longitude,
         latitude
-      };
-
-      setWeatherData(updateWeatherData);
+      });
     } catch (error) {
       setError(error.message);
     } finally {
@@ -69,10 +69,20 @@ const useWeather = () => {
       message: "Fetching location..."
     });
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      fetchWeatherData(position.coords.latitude, position.coords.longitude);
-    });
-  }, []);
+    if (selectedLocation?.latitude && selectedLocation?.longitude) {
+      fetchWeatherData(selectedLocation.latitude, selectedLocation.longitude);
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeatherData(position.coords.latitude, position.coords.longitude);
+        },
+        (err) => {
+          setError("Geolocation permission denied or unavailable.");
+          setLoading({ state: false, message: "" });
+        }
+      );
+    }
+  }, [selectedLocation]);
 
   return { weatherData, loading, error };
 };

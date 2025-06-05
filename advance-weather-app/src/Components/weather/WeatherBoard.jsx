@@ -1,22 +1,25 @@
+import { useWeatherContext } from "../../provider/index";
 import AddToFavourite from "./AddToFavourite";
 import WeatherCondition from "./WeatherCondition";
 import WeatherHeadline from "./WeatherHeadline";
-import { useWeather } from "../../hooks/hook.js";
 
 function WeatherBoard() {
-  const { weatherData, loading, error } = useWeather();
-  console.log(weatherData)
+  const { weatherData, loading } = useWeatherContext();
+  // console.log(weatherData);
+
   return (
     <div className="container">
-      <div className="grid bg-black/20 rounded-xl backdrop-blur-md border-2 lg:border-[3px] border-white/[14%] px-4 lg:px-14 py-6 lg:py-10 min-h-[520px] max-w-[1058px] mx-auto">
+      <div className="grid bg-black/20 rounded-xl backdrop-blur-md border-2 lg:border-[3px] border-white/[14%] px-4 lg:px-14 py-6 lg:py-10 min-h-[520px] min-w-[90%] md:min-w-[80%] max-w-[1058px] mx-auto">
         <div className="grid md:grid-cols-2 gap-10 md:gap-6">
-          <div className="md:col-span-2">
-            <div className="flex items-center justify-end space-x-6">
+          {loading.state ? (
+            <p> {loading.message}</p>
+          ) : (
+            <>
               <AddToFavourite />
-            </div>
-          </div>
-          <WeatherHeadline />
-          <WeatherCondition />
+              <WeatherHeadline />
+              <WeatherCondition />
+            </>
+          )}
         </div>
       </div>
     </div>
