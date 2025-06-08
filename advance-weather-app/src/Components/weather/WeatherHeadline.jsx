@@ -8,6 +8,7 @@ import ThunderIcon from "../../assets/thunder.svg";
 
 import { useWeatherContext } from "../../provider/index";
 import { getFormatDate } from "../../utils/data.utils";
+
 function WeatherHeadline() {
   const { weatherData } = useWeatherContext();
   const { climate, location, temperature, time } = weatherData;
@@ -28,23 +29,32 @@ function WeatherHeadline() {
         return CloudIcon;
     }
   }
+
   return (
-    <div>
-      <div className="max-md:flex items-center justify-between md:-mt-10">
-        <img src={cloud} alt="cloud" />
-        <div className="max-md:flex items-center max-md:space-x-4">
-          <h1 className="text-[60px] lg:text-[80px] xl:text-[100px] leading-none md:mb-4">
-            {Math.round(temperature)}
-          </h1>
-          <div className="flex items-center space-x-4 md:mb-4">
-            <img src={pin} />
-            <h2 className="text-2xl lg:text-[50px]">{location}</h2>
-          </div>
+    <div className="flex flex-col items-center text-center space-y-4">
+      <img src={cloud} alt="cloud" className="w-20 md:w-28 lg:w-32" />
+
+      <div className="flex flex-col items-center space-y-2">
+        <h1 className="text-[60px] lg:text-[80px] xl:text-[100px] leading-none font-bold">
+          {Math.round(temperature)}°
+        </h1>
+        <div className="flex items-center space-x-2">
+          <img src={pin} alt="location-pin" className="w-5 h-5" />
+          <h2 className="text-2xl lg:text-[40px] font-medium">{location}</h2>
         </div>
       </div>
-      <p className="text-sm lg:text-lg">
-        {getFormatDate(time, "time", false)}-{" "}
-        {getFormatDate(time, "date", false)}
+
+      <div className="flex items-center space-x-2 text-lg">
+        <img
+          src={getWeatherIcon(climate)}
+          alt={climate}
+          className="w-6 h-6"
+        />
+        <span className="capitalize">{climate}</span>
+      </div>
+
+      <p className="text-sm lg:text-lg text-gray-600">
+        {getFormatDate(time, "time", false)} - {getFormatDate(time, "date", false)}
       </p>
     </div>
   );
