@@ -5,21 +5,28 @@ import { getLocationByName } from "../../data/location.data";
 function Search() {
   const [searchQuery, setSearchQuery] = useState("");
   const { setSelectedLocation } = useContext(LocationContext);
-  function handleSubmit(e) {
-    e.preventDefault();
-    const fetchedLocation = getLocationByName(searchQuery);
+  
+const doSearch = useDebounce((query)=>{
+ const fetchedLocation = getLocationByName(query);
     setSelectedLocation({ ...fetchedLocation });
-    console.log(fetchedLocation);
+   
+},500)
+
+  function handleChange(e){
+    const value = e.target.value;
+    searchQuery(value)
+    doSearch(value)
   }
+
   return (
-    <form action="#" onSubmit={handleSubmit}>
+    <form>
       <div className="flex items-center space-x-2 py-2 px-3 group focus-within:bg-black/30 transition-all border-b border-white/50 focus-within:border-b-0 focus-within:rounded-md">
         <input
           className="bg-transparent  placeholder:text-white text-white w-full text-xs md:text-base outline-none border-none"
           type="search"
           placeholder="Search Location"
           required
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleChange}
         />
         <button type="submit">
           <img src={searchIcon} />
