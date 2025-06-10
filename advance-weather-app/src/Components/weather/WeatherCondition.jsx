@@ -7,47 +7,47 @@ import { useWeatherContext } from "../../provider/index";
 
 function WeatherCondition() {
   const { weatherData } = useWeatherContext();
-  const { climate, maxTemperature, minTemperature, humidity, wind } =
-    weatherData;
+  const { climate, maxTemperature, minTemperature, humidity, wind } = weatherData;
+
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center text-center">
       <p className="text-sm lg:text-lg font-bold uppercase mb-8">
         The climate is <u>{climate}</u>
       </p>
-      <ul className="space-y-6 lg:space-y-6">
-        <li className="text-sm lg:text-lg flex items-center justify-between space-x-4">
+      <ul className="space-y-6 lg:space-y-6 w-full max-w-md">
+        <li className="text-sm lg:text-lg flex justify-between items-center">
           <span>Temp max</span>
-          <div className="inline-flex space-x-4">
+          <div className="flex items-center space-x-2">
             <p>{maxTemperature}</p>
-            <img src={tempMax} alt="temp-max" />
+            <img src={tempMax} alt="temp-max" className="w-6 h-6" />
           </div>
         </li>
-        <li className="text-sm lg:text-lg flex items-center justify-between space-x-4">
-          <span>{minTemperature}</span>
-          <div className="inline-flex space-x-4">
-            <p>19°</p>
-            <img src={tempMin} alt="temp-min" />
+        <li className="text-sm lg:text-lg flex justify-between items-center">
+          <span>Temp min</span>
+          <div className="flex items-center space-x-2">
+            <p>{minTemperature}</p>
+            <img src={tempMin} alt="temp-min" className="w-6 h-6" />
           </div>
         </li>
-        <li className="text-sm lg:text-lg flex items-center justify-between space-x-4">
-          <span>Humadity</span>
-          <div className="inline-flex space-x-4">
-            <p>58%</p>
-            <img src={humidityIcon} alt="humidity" />
+        <li className="text-sm lg:text-lg flex justify-between items-center">
+          <span>Humidity</span>
+          <div className="flex items-center space-x-2">
+            <p>{humidity}</p>
+            <img src={humidityIcon} alt="humidity" className="w-6 h-6" />
           </div>
         </li>
-        <li className="text-sm lg:text-lg flex items-center justify-between space-x-4">
+        <li className="text-sm lg:text-lg flex justify-between items-center">
           <span>Cloudy</span>
-          <div className="inline-flex space-x-4">
+          <div className="flex items-center space-x-2">
             <p>86%</p>
-            <img src={cloudy} alt="cloudy" />
+            <img src={cloudy} alt="cloudy" className="w-6 h-6" />
           </div>
         </li>
-        <li className="text-sm lg:text-lg flex items-center justify-between space-x-4">
+        <li className="text-sm lg:text-lg flex justify-between items-center">
           <span>Wind</span>
-          <div className="inline-flex space-x-4">
-            <p>5km/h</p>
-            <img src={windIcon} alt="wind" />
+          <div className="flex items-center space-x-2">
+            <p>{wind}</p>
+            <img src={windIcon} alt="wind" className="w-6 h-6" />
           </div>
         </li>
       </ul>

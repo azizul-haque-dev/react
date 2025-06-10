@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @layer components {
-  .container {
-    @apply mx-auto p-4;
+  .myContainer {
+    @apply mx-auto p-4 w-2xl;
   }
 }
