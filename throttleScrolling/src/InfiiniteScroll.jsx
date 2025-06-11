@@ -5,7 +5,7 @@ const throttle = (callback, delay) => {
   return (...arg) => {
     const now = new Date().getTime();
     if (now - lastCall >= delay) {
-      lastCall == delay;
+      lastCall == now;
       callback(...arg);
     }
   };
@@ -16,19 +16,16 @@ function InfiiniteScroll({ fetchMore }) {
     const scrollTop = window.scrollY;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
-    const thresHold = 400;
+    const thresHold = 600;
     if (
       scrollTop + windowHeight >= documentHeight - thresHold &&
       !isFetching.current
     ) {
       isFetching.current = true;
-      (async () => {
-        try {
-          await fetchMore();
-        } finally {
-          isFetching.current = false;
-        }
-      })();
+      isFetching.current = true;
+      fetchMore().finally(() => {
+        isFetching.current = false;
+      });
     }
   }
   useEffect(() => {
