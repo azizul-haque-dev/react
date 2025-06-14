@@ -1,18 +1,41 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 import Field from "../common/Field";
 
 function LoginForm() {
+  const navigate = useNavigate();
+  const { setAuth, url } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm();
-  function submitForm(data) {
-    console.log(data);
-    navigate("/");
+  async function submitForm(formData) {
+    try {
+      const response = await axios.post(`${url}/auth/login`, formData);
+
+      if (response.status === 200) {
+        const { token, user } = response.data;
+        if (token) {
+          const authToken = token.token;
+          const refreshToken = token.refreshToken;
+
+          setAuth({ user, authToken, refreshToken });
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setError("root", {
+        type: "login",
+        message: `Invalid login with email ${formData.email}`
+      });
+    }
   }
-  const navigate = useNavigate();
+
   return (
     <div className="card">
       <form
@@ -29,6 +52,7 @@ function LoginForm() {
             name="email"
             type="email"
             id="email"
+            defaultValue={"saadh392@mail.com"}
           />
         </Field>
 
@@ -48,6 +72,7 @@ function LoginForm() {
             name="password"
             type="password"
             id="password"
+            defaultValue={"bestPassw0rd"}
           />
         </Field>
         {/* Submit */}
