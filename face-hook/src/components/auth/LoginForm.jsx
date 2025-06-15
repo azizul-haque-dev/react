@@ -1,21 +1,27 @@
-import axios from "axios";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Field from "../common/Field";
 
-function LoginForm() {
+import axios from "axios";
+
+const LoginForm = () => {
   const navigate = useNavigate();
-  const { setAuth, url } = useAuth();
+  const { setAuth } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError
   } = useForm();
-  async function submitForm(formData) {
+
+  const submitForm = async (formData) => {
     try {
-      const response = await axios.post(`${url}/auth/login`, formData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login`,
+        formData
+      );
 
       if (response.status === 200) {
         const { token, user } = response.data;
@@ -23,82 +29,65 @@ function LoginForm() {
           const authToken = token.token;
           const refreshToken = token.refreshToken;
 
+          console.log(`Login time auth token: ${authToken}`);
           setAuth({ user, authToken, refreshToken });
+
           navigate("/");
         }
       }
     } catch (error) {
       console.error(error);
-      setError("root", {
-        type: "login",
-        message: `Invalid login with email ${formData.email}`
+      setError("root.random", {
+        type: "random",
+        message: `User with email ${formData.email} is not found`
       });
     }
-  }
+  };
 
   return (
-    <div className="card">
-      <form
-        onSubmit={handleSubmit(submitForm)}
-        className="border-b border-[#3F3F3F] pb-10 lg:pb-[60px]"
-      >
-        {/* email */}
-        <Field label="Email" error={errors.email}>
-          <input
-            {...register("email", { required: "Email id is required" })}
-            className={`auth-input ${
-              errors.email ? "border-red-500" : "border-gray-200"
-            }`}
-            name="email"
-            type="email"
-            id="email"
-            defaultValue={"saadh392@mail.com"}
-          />
-        </Field>
+    <form
+      className="border-b border-[#3F3F3F] pb-10 lg:pb-[60px]"
+      onSubmit={handleSubmit(submitForm)}
+    >
+      <Field label="Email" error={errors.email}>
+        <input
+          {...register("email", { required: "Email ID is Required" })}
+          className={`auth-input ${
+            !errors.email ? "border-red-500" : "border-gray-200"
+          }`}
+          type="email"
+          name="email"
+          id="email"
+          defaultValue={"saadh392@mail.com"}
+        />
+      </Field>
 
-        {/* password */}
-        <Field label="password" error={errors.password}>
-          <input
-            {...register("password", {
-              required: "password id is required",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters"
-              }
-            })}
-            className={`auth-input ${
-              errors.email ? "border-red-500" : "border-gray-200"
-            }`}
-            name="password"
-            type="password"
-            id="password"
-            defaultValue={"bestPassw0rd"}
-          />
-        </Field>
-        {/* Submit */}
-
-        <Field>
-          <button
-            className="auth-input bg-lwsGreen font-bold text-deepDark transition-all hover:opacity-90"
-            type="submit"
-          >
-            Login
-          </button>
-        </Field>
-      </form>
-      <div className="py-4 lg:py-6">
-        <p className="text-center text-xs text-gray-600/95 lg:text-sm">
-          Don’t have account?
-          <Link
-            className="text-white transition-all hover:text-lwsGreen hover:underline"
-            to="/register"
-          >
-            Create New
-          </Link>
-        </p>
-      </div>
-    </div>
+      <Field label="Password" error={errors.password}>
+        <input
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Your password must be at least 8 characters"
+            }
+          })}
+          className={`auth-input ${
+            errors.password ? "border-red-500" : "border-gray-200"
+          }`}
+          type="password"
+          name="password"
+          id="password"
+          defaultValue={"bestPassw0rd"}
+        />
+      </Field>
+      <p>{errors?.root?.random?.message}</p>
+      <Field>
+        <button className="auth-input bg-lwsGreen font-bold text-deepDark transition-all hover:opacity-90">
+          Login
+        </button>
+      </Field>
+    </form>
   );
-}
+};
 
 export default LoginForm;
